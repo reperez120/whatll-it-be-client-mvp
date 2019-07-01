@@ -1,0 +1,26 @@
+
+.App  {
+       font-family: sans-serif;
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       margin-top: .5rem;
+       margin-bottom: .5rem;
+       margin-left: .5rem;
+       margin-right: .5rem
+   }
+
+   h2 {
+       text-align: center;
+   }
+   
+   .image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: gray;
+    height: 8rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}

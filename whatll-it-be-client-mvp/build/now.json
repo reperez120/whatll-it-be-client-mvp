@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "alias": "rachels-whatll-it-be-app",
+  "name": "whatll-it-be-static",
+  "routes": [
+      {
+        "src": "^/static/(.*)",
+        "dest": "/static/$1"
+      },
+      {
+        "src": ".*",
+        "dest": "/index.html"
+      }
+  ]
+}
