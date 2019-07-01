@@ -27,7 +27,7 @@ handleFormSubmit = e => {
 
   const location = e.target.location.value
   const weatherApi = 'http://api.openweathermap.org/data/2.5/weather';
-  const drinkApi = 'http://localhost:8000/drinks?type='
+  const drinkApi = 'https://calm-sea-60714.herokuapp.com/drinks?type='
 
   const params = {
     q: location
