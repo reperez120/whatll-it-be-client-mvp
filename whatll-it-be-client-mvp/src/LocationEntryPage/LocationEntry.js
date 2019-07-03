@@ -26,7 +26,7 @@ handleFormSubmit = e => {
   e.preventDefault()
 
   const location = e.target.location.value
-  const weatherApi = 'http://api.openweathermap.org/data/2.5/weather';
+  const weatherApi = 'https://api.openweathermap.org/data/2.5/weather';
   const drinkApi = 'https://calm-sea-60714.herokuapp.com/drinks?type='
 
   const params = {
@@ -39,10 +39,26 @@ handleFormSubmit = e => {
   return queryItems.join('&');
 }
 
-const key = 'APPID=9627fcb46366ceb7b0232f3561cc95de';
-  const queryString = formatQueryParams(params);
-  const weatherUrl = weatherApi + '?' + queryString +  '&' + key; 
- 
+const geoKey = 'evHLAvBVsDCaNFdByNrmOKMYhL2QWujC';
+const geoQuery = formatQueryParams(params);
+const geoApi =  'https://open.mapquestapi.com/geocoding/v1/address?key=evHLAvBVsDCaNFdByNrmOKMYhL2QWujC&location=';
+const geoUrl = geoApi + geoQuery
+
+const geoOptions = {
+  method: 'GET',
+}
+
+fetch(geoUrl,  geoOptions)
+.then(response => response.json())
+.then(data => {
+  const results = data.results
+  const lat = results[0].locations[0].latLng.lat
+  const lon = results[0].locations[0].latLng.lng
+
+const weatherKey = 'APPID=9627fcb46366ceb7b0232f3561cc95de';
+const weatherQuery = formatQueryParams(params);
+const weatherUrl = weatherApi + '?' + 'lat=' + lat + '&' +'lon=' + lon + '&' + weatherKey;
+
   const options = {
     method: 'GET',
   }
@@ -75,29 +91,30 @@ const key = 'APPID=9627fcb46366ceb7b0232f3561cc95de';
     }
     
     if( temp < 291) {
-    const options = {
-      method: 'GET',
-    }
-    const hotDrinkUrl = drinkApi + 'hot';
-    fetch(hotDrinkUrl, options)
-    .then(response => response.json())
-    .then(data => {
-      let drink = data[Math.floor(Math.random() * data.length)]
-      let name = drink.name;
-      let recipe = drink.recipe;
-      let ingredients = drink.ingredients
-  
+      const options = {
+        method: 'GET',
+      }
+      const hotDrinkUrl = drinkApi + 'hot';
+      fetch(hotDrinkUrl, options)
+      .then(response => response.json())
+      .then(data => {
+        let drink = data[Math.floor(Math.random() * data.length)]
+        let name = drink.name;
+        let recipe = drink.recipe;
+        let ingredients = drink.ingredients
+    
         this.setState({
-            name,
-            recipe, 
-            ingredients,
-            message: 'May we suggest:',
-            recipeHeader: 'Recipe',
-            ingredientsHeader: 'Ingredients',
-            methodHeader: 'Method'
-          });
+          name,
+          recipe, 
+          ingredients,
+          message: 'May we suggest:',
+          recipeHeader: 'Recipe',
+          ingredientsHeader: 'Ingredients',
+          methodHeader: 'Method'
+        });
       })
     }
+  })
 })
 }
 
@@ -105,7 +122,7 @@ const key = 'APPID=9627fcb46366ceb7b0232f3561cc95de';
       return (
         <div className='LocationEntry'>
           <header className='LocationHeader'>
-              <h3>Enter the name of your city to get a drink 
+              <h3>Enter the name of your city or your city and two-letter state code to get a drink 
                 suggestion.
               </h3>
           </header>
